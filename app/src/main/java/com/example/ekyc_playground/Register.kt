@@ -41,26 +41,38 @@ class Register : AppCompatActivity() {
 
         register.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-                checkDataEntered()
+                if(checkDataEntered()){
+                    registerUser()
+                }
             }
 
-            private fun checkDataEntered() {
-
+            private fun checkDataEntered(): Boolean {
+                var flag = false
                 if (isEmpty(Name)) {
                     Name.setError("Name is required!");
+                    flag = true
                 }
                 if (isEmpty(Pan)) {
                     Pan.setError("Pan is required!");
+                    flag = true
+
                 }
                 if (isEmpty(PostalAddress)) {
                     PostalAddress.setError("Address is required!");
+                    flag = true
+
                 }
                 if (isEmpty(aadhar)) {
                     aadhar.setError("Aadhar is required!");
+                    flag = true
+
                 }
                 if (isEmail(email) == false) {
                     email.setError("Enter valid email!");
+                    flag = true
+
                 }
+                return !flag
             }
 
             fun isEmpty(text: EditText): Boolean {
@@ -78,7 +90,7 @@ class Register : AppCompatActivity() {
     }
 
 
-
+// TODO: @Vindhya ClickHandler no longer required?
     fun clickHandler(view: android.view.View) {
         when (view.id) {
             R.id.btnRegister -> {
