@@ -13,12 +13,6 @@ import com.google.firebase.ktx.Firebase
 import android.text.TextUtils
 import android.util.Patterns
 
-
-
-
-
-
-
 class Register : AppCompatActivity() {
     var TAG:String = Register::class.java.simpleName
     val db = Firebase.firestore
