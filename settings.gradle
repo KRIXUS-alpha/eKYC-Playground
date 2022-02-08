@@ -7,4 +7,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "eKYC-Playground"
-include ':app'
+include ':app',':ekyc'

@@ -3,9 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-<!--         <entry key="..\:/Users/manohar sai/AndroidStudioProjects/eKYC-playground/app/src/main/res/layout/activity_login.xml" value="0.18" /> -->
-<!--         <entry key="..\:/Users/manohar sai/AndroidStudioProjects/eKYC-playground/app/src/main/res/layout/activity_login2.xml" value="0.1" /> -->
-<!--         <entry key="..\:/Users/manohar sai/AndroidStudioProjects/eKYC-playground/app/src/main/res/layout/activity_main.xml" value="0.1" /> -->
+        <entry key="..\:/Users/Kartikeya/AndroidStudioProjects/eKYC-Playground/app/src/main/res/drawable/ic_face_detect.xml" value="0.3828125" />
+        <entry key="..\:/Users/Kartikeya/AndroidStudioProjects/eKYC-Playground/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Kartikeya/AndroidStudioProjects/eKYC-Playground/app/src/main/res/layout/activity_profile.xml" value="0.26875" />
+        <entry key="..\:/Users/Kartikeya/AndroidStudioProjects/eKYC-Playground/app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="..\:/Users/Vindhya Prakash/AndroidStudioProjects/eKYC-Playground/app/src/main/res/layout/activity_register.xml" value="0.1793478260869565" />
       </map>
     </option>
