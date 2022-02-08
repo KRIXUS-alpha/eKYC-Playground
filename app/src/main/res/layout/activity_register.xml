@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ADAF9292"
+    android:backgroundTint="#8F7F7F"
     tools:context=".Register">
 
 
@@ -11,22 +13,24 @@
         android:id="@+id/Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="127dp"
+        android:layout_marginBottom="22dp"
         android:ems="10"
         android:hint="Enter Name"
         android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/PostalAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
         android:id="@+id/PostalAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginBottom="24dp"
         android:ems="10"
         android:hint="Enter Address"
         android:inputType="textPostalAddress"
+        app:layout_constraintBottom_toTopOf="@+id/pan"
         app:layout_constraintStart_toStartOf="@+id/Name"
         app:layout_constraintTop_toBottomOf="@+id/Name" />
 
@@ -34,11 +38,11 @@
         android:id="@+id/pan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginBottom="28dp"
         android:ems="10"
         android:hint="Enter Pan"
         android:inputType="textPersonName"
-
+        app:layout_constraintBottom_toTopOf="@+id/aadhar"
         app:layout_constraintStart_toStartOf="@+id/PostalAddress"
         app:layout_constraintTop_toBottomOf="@+id/PostalAddress" />
 
@@ -46,12 +50,9 @@
         android:id="@+id/aadhar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginBottom="23dp"
         android:ems="10"
         android:hint="Enter Aadhar Number"
-        android:inputType="textPersonName"
-
         app:layout_constraintStart_toStartOf="@+id/pan"
         app:layout_constraintTop_toBottomOf="@+id/pan" />
 
@@ -59,25 +60,44 @@
         android:id="@+id/EmailAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="37dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="29dp"
         android:ems="10"
         android:hint="Enter Email"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
-
-        app:layout_constraintStart_toStartOf="@+id/aadhar"
+        app:layout_constraintBottom_toTopOf="@+id/btnRegister"
+        app:layout_constraintEnd_toEndOf="@+id/aadhar"
         app:layout_constraintTop_toBottomOf="@+id/aadhar" />
 
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="42dp"
+        android:layout_marginBottom="78dp"
         android:onClick="clickHandler"
         android:text="Register"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EmailAddress" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="326dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="41dp"
+        android:layout_marginBottom="37dp"
+        app:layout_constraintBottom_toTopOf="@+id/Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_register_hero" />
+
+
+
+
+
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
