@@ -1,5 +1,6 @@
 package com.example.ekyc_playground
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.ekyc_playground.models.User
@@ -86,11 +88,11 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setData() {
-        emailTV.setText(user.Email)
-        aadharTV.setText(user.Aadhar)
-        addressTV.setText(user.Address)
-        nameTV.setText(user.Name)
-        panTV.setText(user.Pan)
+        emailTV.setText("Email :"+ user.Email)
+        aadharTV.setText("AADHAAR :"+user.Aadhar)
+        addressTV.setText("Address :"+user.Address)
+        nameTV.setText("Name :"+user.Name)
+        panTV.setText("PAN :"+user.Pan)
         val executor = Executors.newSingleThreadExecutor()
 
         // Once the executor parses the URL
@@ -127,6 +129,10 @@ class ProfileActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    fun clickHandler(view: View) {
+        startActivity(Intent(this,Update::class.java))
     }
 
 }
