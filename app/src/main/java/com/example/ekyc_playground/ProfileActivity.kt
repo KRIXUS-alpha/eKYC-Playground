@@ -1,8 +1,13 @@
 package com.example.ekyc_playground
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
 import com.example.ekyc_playground.models.User
 import com.google.firebase.auth.FirebaseAuth
@@ -13,6 +18,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import java.lang.Exception
+import java.util.concurrent.Executors
 
 class ProfileActivity : AppCompatActivity() {
     lateinit var email: String
@@ -24,6 +30,8 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var  nameTV : TextView
     lateinit var  addressTV : TextView
     lateinit var  aadharTV : TextView
+    lateinit var  profile : ImageView
+
     private lateinit var currentUser: FirebaseUser
     private lateinit var auth: FirebaseAuth
 
@@ -31,6 +39,7 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         db = Firebase.firestore
         setContentView(R.layout.activity_profile)
+        profile = findViewById<ImageView>(R.id.imageView4)
         emailTV = findViewById<TextView>(R.id.Email)
         nameTV = findViewById<TextView>(R.id.Name)
         addressTV = findViewById<TextView>(R.id.Address)
@@ -82,6 +91,41 @@ class ProfileActivity : AppCompatActivity() {
         addressTV.setText(user.Address)
         nameTV.setText(user.Name)
         panTV.setText(user.Pan)
+        val executor = Executors.newSingleThreadExecutor()
+
+        // Once the executor parses the URL
+        // and receives the image, handler will load it
+        // in the ImageView
+        val handler = Handler(Looper.getMainLooper())
+
+        // Initializing the image
+        var image: Bitmap? = null
+
+        // Only for Background process (can take time depending on the Internet speed)
+        executor.execute {
+
+            // Image URL
+            val imageURL = user.ProfileP
+
+            // Tries to get the image and post it in the ImageView
+            // with the help of Handler
+            try {
+                val `in` = java.net.URL(imageURL).openStream()
+                image = BitmapFactory.decodeStream(`in`)
+
+                // Only for making changes in UI
+                handler.post {
+                    profile.setImageBitmap(image)
+                }
+            }
+
+            // If the URL doesnot point to
+            // image or any other kind of failure
+            catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
 
     }
 

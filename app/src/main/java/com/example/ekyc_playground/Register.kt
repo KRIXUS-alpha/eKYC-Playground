@@ -38,7 +38,7 @@ class Register : AppCompatActivity() {
     lateinit var PostalAddress: EditText
     lateinit var Pan: EditText
     lateinit var aadhar: EditText
-    lateinit var email: EditText
+//    lateinit var email: EditText
     lateinit var register: Button
     private lateinit var currentUser: FirebaseUser
     private lateinit var auth: FirebaseAuth
@@ -51,7 +51,7 @@ class Register : AppCompatActivity() {
         PostalAddress = findViewById(R.id.PostalAddress)
         Pan = findViewById(R.id.pan)
         aadhar = findViewById(R.id.aadhar)
-        email = findViewById(R.id.EmailAddress)
+//        email = findViewById(R.id.EmailAddress)
         register = findViewById(R.id.btnRegister)
         auth = Firebase.auth
         currentUser = auth.currentUser!!
@@ -87,11 +87,11 @@ class Register : AppCompatActivity() {
                     flag = true
 
                 }
-                if (isEmail(email) == false) {
-                    email.setError("Enter valid email!");
-                    flag = true
-
-                }
+//                if (isEmail(email) == false) {
+//                    email.setError("Enter valid email!");
+//                    flag = true
+//
+//                }
                 return !flag
             }
 
@@ -132,12 +132,17 @@ class Register : AppCompatActivity() {
                 //face detected
                 val fileAddress = data?.getStringExtra(IMAGE_URL)
                 fileAddress.toast(this)
+
+                val storage = Firebase.storage("gs://ekyc-playground-970f7.appspot.com/")
+
                 var storageRef = storage.reference
+                // Get a non-default Storage bucket
 
                 var imagesRef: StorageReference? = storageRef.child("images")
-                var file = Uri.fromFile(File(IMAGE_URL))
-                val riversRef = storageRef.child("images/${file.lastPathSegment}")
-                var uploadTask = riversRef.putFile(file)
+                Log.d(TAG, fileAddress+"jo")
+                var file = Uri.fromFile(File(fileAddress))
+                val uidphotoRef = storageRef.child("images/${currentUser.uid.toString()}/pro")
+                var uploadTask = uidphotoRef.putFile(file)
 
                 // Register observers to listen for when the download is done or if it fails
                 uploadTask.addOnFailureListener {
@@ -145,7 +150,7 @@ class Register : AppCompatActivity() {
                 }.addOnSuccessListener { taskSnapshot ->
                     // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
                     // ...
-                    val ref = storageRef.child("images/${file.lastPathSegment}")
+                    val ref = uidphotoRef.child("${file.lastPathSegment}")
                     uploadTask = ref.putFile(file)
 
                     val urlTask = uploadTask.continueWithTask { task ->
@@ -159,6 +164,14 @@ class Register : AppCompatActivity() {
                         if (task.isSuccessful) {
                             val downloadUri = task.result
                             Log.d(TAG,downloadUri.toString())
+                            val userRef = db.collection("users").document(currentUser.uid.toString())
+                            val user = hashMapOf(
+                                "ProfileP"  to downloadUri.toString(),
+                            )
+                            userRef
+                                .set(user)
+                                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
+                                .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
                         } else {
                             // Handle failures
                             // ...
@@ -174,6 +187,53 @@ class Register : AppCompatActivity() {
                 val fileAddress = data?.getStringExtra(IMAGE_URL)
                 val results = data?.getStringExtra(RESULTS)
                 "$fileAddress $results".toast(this)
+                val storage = Firebase.storage("gs://ekyc-playground-970f7.appspot.com/")
+
+                var storageRef = storage.reference
+                // Get a non-default Storage bucket
+
+                var imagesRef: StorageReference? = storageRef.child("images")
+                Log.d(TAG, fileAddress+"jo")
+                var file = Uri.fromFile(File(fileAddress))
+                val uidphotoRef = storageRef.child("images/${currentUser.uid.toString()}/id")
+                var uploadTask = uidphotoRef.putFile(file)
+
+                // Register observers to listen for when the download is done or if it fails
+                uploadTask.addOnFailureListener {
+                    // Handle unsuccessful uploads
+                }.addOnSuccessListener { taskSnapshot ->
+                    // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+                    // ...
+                    val ref = uidphotoRef.child("${file.lastPathSegment}")
+                    uploadTask = ref.putFile(file)
+
+                    val urlTask = uploadTask.continueWithTask { task ->
+                        if (!task.isSuccessful) {
+                            task.exception?.let {
+                                throw it
+                            }
+                        }
+                        ref.downloadUrl
+                    }.addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val downloadUri = task.result
+                            Log.d(TAG,downloadUri.toString())
+                            val userRef = db.collection("users").document(currentUser.uid.toString())
+                            val user = hashMapOf(
+                                "ID"  to downloadUri.toString(),
+                                "idDetails" to results.toString()
+                            )
+                            userRef
+                                .update(user as Map<String, Any>)
+                                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
+                                .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+                        } else {
+                            // Handle failures
+                            // ...
+                        }
+                    }
+                }
+                db
             }
         }
 //        //NFC extraction
@@ -187,20 +247,18 @@ class Register : AppCompatActivity() {
 
 
 // TODO: @Vindhya ClickHandler no longer required?
-    fun clickHandler(view: View) {
-        when (view.id) {
-            R.id.btnRegister -> {
-                registerUser()
-            }
-        }
-    }
+
+
     private fun registerUser() {
+
+        val u = FirebaseAuth.getInstance().currentUser
+        val email = u!!.email
         val user = hashMapOf(
             "Name" to Name.text.toString(),
             "Address" to PostalAddress.text.toString(),
             "Pan" to Pan.text.toString(),
             "Aadhar" to aadhar.text.toString(),
-            "Email" to email.text.toString()
+            "Email" to email
         )
 
         // Add a new document with a generated ID
@@ -214,7 +272,9 @@ class Register : AppCompatActivity() {
 //                Log.w(TAG, "Error adding document", e)
 //            }
         Log.d(TAG, currentUser.uid.toString())
-        db.collection("users").document(currentUser.uid.toString()).set(user)
+        val sfDocRef = db.collection("user").document(currentUser.uid.toString())
+
+        db.collection("users").document(currentUser.uid.toString()).update(user as Map<String, Any>)
         startActivity(Intent(this,ProfileActivity::class.java))
         Toast.makeText(this,"Registered", Toast.LENGTH_SHORT).show()
     }
